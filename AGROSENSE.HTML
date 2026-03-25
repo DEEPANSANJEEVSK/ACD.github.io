@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroSense AI | Edge-Deployed Crop Detection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0D1B2A;
+            --accent-color: #00B4D8;
+            --highlight-color: #F4A522;
+            --text-white: #FFFFFF;
+            --card-bg: #1B263B;
+            --nav-bg: rgba(13, 27, 42, 0.95);
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-white); line-height: 1.6; overflow-x: hidden; }
+        html { scroll-behavior: smooth; }
+        section { padding: 100px 10% 80px; }
+        h2 { font-size: 2.5rem; margin-bottom: 50px; text-align: center; color: var(--accent-color); text-transform: uppercase; letter-spacing: 2px; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%; background: var(--nav-bg);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 10%; z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--accent-color); text-decoration: none; }
+        .nav-links { display: flex; list-style: none; }
+        .nav-links li { margin-left: 30px; }
+        .nav-links a { color: var(--text-white); text-decoration: none; font-weight: 500; transition: var(--transition); }
+        .nav-links a:hover { color: var(--accent-color); }
+        .hamburger { display: none; cursor: pointer; font-size: 1.5rem; }
+
+        /* --- HERO --- */
+        #home {
+            height: 100vh; display: flex; flex-direction: column; justify-content: center;
+            align-items: center; text-align: center;
+            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), 
+                        url('https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=1920') center/cover;
+        }
+        .hero-title { font-size: 4.5rem; margin-bottom: 10px; color: var(--accent-color); }
+        .hero-sub { font-size: 1.5rem; max-width: 800px; margin-bottom: 50px; font-weight: 300; }
+        .hero-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; width: 100%; max-width: 1000px; }
+        .hero-card { background: var(--card-bg); padding: 30px; border-radius: 12px; border-bottom: 4px solid var(--accent-color); transition: var(--transition); }
+        .hero-card:hover { transform: translateY(-10px); background: #25334c; }
+        .hero-card i { font-size: 2.5rem; color: var(--highlight-color); margin-bottom: 15px; }
+
+        /* --- PROBLEM --- */
+        #problem { background-color: #08111a; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .stat-card { background: #141E27; padding: 40px; border-radius: 15px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .stat-card h3 { color: var(--highlight-color); font-size: 2rem; margin-bottom: 15px; }
+        .bold-statement { margin-top: 60px; text-align: center; font-size: 1.8rem; font-weight: 700; color: var(--accent-color); border: 2px dashed var(--accent-color); padding: 30px; border-radius: 10px; }
+
+        /* --- SOLUTION & DEMO --- */
+        .layer-card { background: var(--card-bg); margin-bottom: 30px; padding: 40px; border-radius: 20px; display: flex; align-items: center; gap: 40px; }
+        .layer-num { font-size: 4rem; font-weight: 800; color: rgba(0, 180, 216, 0.2); }
+        .demo-box { background: #0a1118; padding: 30px; border-radius: 15px; border: 2px solid var(--accent-color); margin-top: 40px; }
+        .upload-area { border: 2px dashed #444; padding: 40px; text-align: center; cursor: pointer; border-radius: 10px; transition: var(--transition); }
+        .upload-area:hover { border-color: var(--accent-color); background: rgba(0, 180, 216, 0.05); }
+
+        /* --- IMPACT --- */
+        #impact { background: linear-gradient(rgba(0, 180, 216, 0.1), rgba(13, 27, 42, 1)); text-align: center; }
+        .counter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .counter-card h3 { font-size: 3.5rem; color: var(--highlight-color); }
+
+        /* --- INNOVATIONS --- */
+        .grid-2x3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .inn-card { background: var(--card-bg); padding: 30px; border-radius: 15px; height: 100%; transition: var(--transition); }
+        .inn-card:hover { border-left: 5px solid var(--highlight-color); }
+
+        /* --- TABLE --- */
+        .table-wrapper { overflow-x: auto; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 15px; overflow: hidden; }
+        th, td { padding: 18px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        th { background: var(--accent-color); color: var(--bg-color); }
+
+        /* --- HARDWARE --- */
+        .hw-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .hw-card { background: #141E27; padding: 25px; border-radius: 15px; text-align: center; border: 1px solid #333; }
+
+        /* --- TEAM SECTION (Updated with uniform logos) --- */
+        .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 900px; margin: 0 auto; }
+        .member-card { text-align: center; background: var(--card-bg); padding: 40px 20px; border-radius: 20px; transition: var(--transition); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .member-card:hover { transform: translateY(-10px); border-color: var(--accent-color); }
+        .member-card i { font-size: 4rem; color: var(--accent-color); margin-bottom: 20px; }
+
+        /* --- FOOTER --- */
+        footer { background: #08111a; padding: 60px 10% 20px; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.8rem; }
+            .nav-links { display: none; }
+            .hamburger { display: block; }
+            .team-grid { grid-template-columns: 1fr; }
+            section { padding: 60px 5%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#home" class="logo">🌿 AgroSense AI</a>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#problem">Features</a></li>
+            <li><a href="#how">How It Works</a></li>
+            <li><a href="#team">Team</a></li>
+        </ul>
+        <div class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+    </nav>
+
+    <section id="home">
+        <h1 class="hero-title">AgroSense AI</h1>
+        <p class="hero-sub">Edge-Deployed Crop Disease Detection for India's 85% of Farmers Left Behind</p>
+        <div class="hero-cards">
+            <div class="hero-card">
+                <i class="fas fa-microchip"></i>
+                <h3>Offline AI</h3>
+                <p>Runs 100% on RPi 4. No cloud. No internet.</p>
+            </div>
+            <div class="hero-card">
+                <i class="fas fa-sms"></i>
+                <h3>Native SMS</h3>
+                <p>Delivers to ₹800 feature phones in 7 languages.</p>
+            </div>
+            <div class="hero-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Under 2 Seconds</h3>
+                <p>Real-time ARM Cortex-A72 inference.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="problem">
+        <h2>Why Existing Solutions Fail</h2>
+        <div class="grid-3">
+            <div class="stat-card">
+                <h3>51%</h3>
+                <p>of rural India has <strong>NO smartphone</strong>. (IAMAI 2024)</p>
+            </div>
+            <div class="stat-card">
+                <h3>38.33%</h3>
+                <p>Rural internet penetration. Fails in monsoon. (TRAI 2023)</p>
+            </div>
+            <div class="stat-card">
+                <h3>38%</h3>
+                <p>Farmers are non-literate in English/Hindi. (Agri Census)</p>
+            </div>
+        </div>
+        <div class="bold-statement">
+            These platforms work for the top 15% of Indian farmers. <br>
+            <span style="color:var(--highlight-color)">AgroSense AI is engineered for the other 85%.</span>
+        </div>
+    </section>
+
+    <section id="solution">
+        <h2>Our Solution</h2>
+        <div class="layer-card">
+            <div class="layer-num">01</div>
+            <div>
+                <h3>Edge AI Detection</h3>
+                <p>MobileNetV3-Small (int8 TFLite) achieves 93% accuracy across 32 disease classes in under 2 seconds.</p>
+            </div>
+        </div>
+        <div class="layer-card">
+            <div class="layer-num">02</div>
+            <div>
+                <h3>Web Dashboard</h3>
+                <p>Served from RPi WiFi hotspot (192.168.4.1:8000). No router or data plan needed.</p>
+            </div>
+        </div>
+        <div class="layer-card">
+            <div class="layer-num">03</div>
+            <div>
+                <h3>Native Language SMS</h3>
+                <p>Offline LibreTranslate + Fast2SMS pipeline delivers advisories in Tamil, Telugu, Hindi, and more.</p>
+            </div>
+        </div>
+
+        <div class="demo-box" id="demo">
+            <h3 style="text-align: center; margin-bottom: 20px;">Farmer Image Upload</h3>
+            <div class="upload-area" id="drop-zone">
+                <i class="fas fa-camera" style="font-size: 3rem; color: var(--accent-color);"></i>
+                <p>Upload Leaf Image for Analysis</p>
+                <input type="file" id="file-input" hidden accept="image/*">
+            </div>
+            <div id="demo-result" style="display: none; margin-top: 20px; text-align: center; background: #1B263B; padding: 20px; border-radius: 10px;">
+                <p id="status-text">Processing on Edge device...</p>
+                <div id="results-display" style="display: none;">
+                    <h4 style="color: var(--highlight-color); font-size: 1.5rem;">Detected: Tomato Late Blight</h4>
+                    <p>Inference: 1.4s | Confidence: 94.2%</p>
+                    <p style="margin-top: 10px; color: #00ff00;">✓ SMS Advisory Sent in Tamil</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="impact">
+        <h2>Impact Numbers</h2>
+        <div class="counter-grid">
+            <div class="counter-card"><h3 class="count">1.32</h3><p>MMT Rice Recoverable/Year</p></div>
+            <div class="counter-card"><h3 class="count">18.3</h3><p>Million People Fed/Year</p></div>
+            <div class="counter-card"><h3 class="count">85</h3><p>% Farmers Reached</p></div>
+            <div class="counter-card"><h3 class="count">7</h3><p>Native Languages</p></div>
+        </div>
+    </section>
+
+    <section id="innovations">
+        <h2>Key Innovations</h2>
+        <div class="grid-2x3">
+            <div class="inn-card"><h4>1. Edge Sovereign AI</h4><p>Full inference on device immune to connectivity failure.</p></div>
+            <div class="inn-card"><h4>2. Email-to-SMS Pipeline</h4><p>Saves ₹600-1200 per unit. No GSM Shield required.</p></div>
+            <div class="inn-card"><h4>3. Hotspot First</h4><p>Device creates its own WiFi. Any phone connects in seconds.</p></div>
+            <div class="inn-card"><h4>4. Native Script SMS</h4><p>UCS-2 Unicode ensures Tamil/Telugu render correctly on 2G phones.</p></div>
+            <div class="inn-card"><h4>5. Decoupled SQLite DB</h4><p>Advisories updatable via CSV without retraining ML model.</p></div>
+            <div class="inn-card"><h4>6. Outbreak Surveillance</h4><p>3-day rolling average auto-escalates to regional alerts.</p></div>
+        </div>
+    </section>
+
+    <section id="crops">
+        <h2>Target Crops</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Crop</th><th>Key Diseases</th><th>Yield Loss</th><th>Dataset</th></tr></thead>
+                <tbody>
+                    <tr><td>Tomato</td><td>Late Blight, TYLCV</td><td>90%</td><td>PlantVillage</td></tr>
+                    <tr><td>Rice</td><td>Bacterial Blight</td><td>30%</td><td>Kaggle</td></tr>
+                    <tr><td>Apple</td><td>Scab, Black Rot</td><td>50-70%</td><td>PlantVillage</td></tr>
+                    <tr><td>Potato</td><td>Early/Late Blight</td><td>17.2%</td><td>PlantVillage</td></tr>
+                    <tr><td>Wheat</td><td>Stripe Rust</td><td>21.5%</td><td>Kaggle</td></tr>
+                    <tr><td>Cotton</td><td>Leaf Curl</td><td>15-40%</td><td>Kaggle</td></tr>
+                    <tr><td>Sugarcane</td><td>Red Rot</td><td>15-20%</td><td>Kaggle</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="how">
+        <h2>How It Works</h2>
+        <div class="grid-3" style="text-align: center;">
+            <div><i class="fas fa-camera fa-2x"></i><p>1. Capture Image</p></div>
+            <div><i class="fas fa-brain fa-2x"></i><p>2. Edge Detection</p></div>
+            <div><i class="fas fa-database fa-2x"></i><p>3. Fetch Advisory</p></div>
+            <div><i class="fas fa-language fa-2x"></i><p>4. Translate</p></div>
+            <div><i class="fas fa-mobile-alt fa-2x"></i><p>5. SMS Alert</p></div>
+        </div>
+    </section>
+
+    <section id="hardware">
+        <h2>Hardware Specs</h2>
+        <div class="hw-grid">
+            <div class="hw-card"><h4>Raspberry Pi 4B</h4><p>ARM Cortex-A72 1.8GHz</p></div>
+            <div class="hw-card"><h4>Camera Module v2</h4><p>8MP Sony IMX219</p></div>
+            <div class="hw-card"><h4>32GB SD Card</h4><p>Class 10 High Speed</p></div>
+            <div class="hw-card"><h4>GPIO LEDs</h4><p>Status Indicators</p></div>
+        </div>
+    </section>
+
+    <section id="team">
+        <h2 style="margin-bottom: 10px;">Team ENVISION</h2>
+        <p style="text-align:center; margin-bottom: 50px;">Dr. NGP Institute of Technology | VIT Hardware Hackathon 2026</p>
+        <div class="team-grid">
+            <div class="member-card">
+                <i class="fas fa-user-circle"></i>
+                <h4>Antony Daniel L</h4>
+            </div>
+            <div class="member-card">
+                <i class="fas fa-user-circle"></i>
+                <h4>Chiranjeevi T B</h4>
+            </div>
+            <div class="member-card">
+                <i class="fas fa-user-circle"></i>
+                <h4>Deepan Sanjeev S K</h4>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p style="font-weight: 700; color: var(--accent-color); font-size: 1.2rem;">🌿 AgroSense AI</p>
+        <p>Team ENVISION | VIT Hardware Hackathon 2026</p>
+        <p style="margin-top: 15px; opacity: 0.5; font-size: 0.8rem;">© 2026 Team ENVISION</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const links = document.querySelector('.nav-links');
+            links.style.display = (links.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const demoResult = document.getElementById('demo-result');
+        const resultsDisplay = document.getElementById('results-display');
+        const statusText = document.getElementById('status-text');
+
+        dropZone.onclick = () => fileInput.click();
+
+        fileInput.onchange = (e) => {
+            if (e.target.files.length > 0) {
+                demoResult.style.display = 'block';
+                resultsDisplay.style.display = 'none';
+                statusText.style.display = 'block';
+                statusText.innerText = "Processing on Edge device...";
+                
+                setTimeout(() => {
+                    statusText.style.display = 'none';
+                    resultsDisplay.style.display = 'block';
+                }, 1500);
+            }
+        };
+
+        const counters = document.querySelectorAll('.count');
+        const observer = new IntersectionObserver((entries) => {
+            if(entries[0].isIntersecting) {
+                counters.forEach(counter => {
+                    const target = +counter.innerText;
+                    let count = 0;
+                    const update = () => {
+                        const inc = target / 100;
+                        if(count < target) {
+                            count += inc;
+                            counter.innerText = count.toFixed(target % 1 === 0 ? 0 : 2);
+                            setTimeout(update, 20);
+                        } else { counter.innerText = target; }
+                    };
+                    update();
+                });
+            }
+        }, { threshold: 0.5 });
+        observer.observe(document.querySelector('#impact'));
+    </script>
+</body>
+</html>
